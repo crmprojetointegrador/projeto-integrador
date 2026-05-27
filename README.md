@@ -54,8 +54,12 @@ Antes de rodar a aplicação localmente, certifique-se de que possui:
  ---
 
  ## 🚀 Equipe de Desenvolvimento
-Alanis Santos - [GitHub]https://github.com/alanis-santos
-Bruna Mendes - [GitHub]https://github.com/bruna-dsmendes
-Eliane Orlandin - [GitHub](https://github.com/Eliane-orlandin)
-Patricia Rocha - [GitHub]https://github.com/patriciarocha1805
-Queren Gomes - ]GitHub]https://github.com/Quequels
+Alanis Santos - https://github.com/alanis-santos
+
+Bruna Mendes - https://github.com/bruna-dsmendes
+
+Eliane Orlandin - https://github.com/Eliane-orlandin
+
+Patricia Rocha - https://github.com/patriciarocha1805
+
+Queren Gomes - https://github.com/Quequels
