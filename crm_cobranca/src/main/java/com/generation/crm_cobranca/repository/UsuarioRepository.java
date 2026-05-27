@@ -9,7 +9,7 @@ import com.generation.crm_cobranca.model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
-    // 3. Método de consulta específico
+    // Método de consulta específico
     // Busca todos os usuários pelo status
     public List<Usuario> findAllByStatusContainingIgnoreCase(@Param("status") String status);
     
