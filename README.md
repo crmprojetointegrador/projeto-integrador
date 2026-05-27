@@ -50,3 +50,12 @@ Antes de rodar a aplicação localmente, certifique-se de que possui:
 1. **Clonar este Repositório:**
    ```bash
    git clone [https://github.com/crmprojetointegrador/projeto-integrador.git](https://github.com/crmprojetointegrador/projeto-integrador.git)
+
+ ---
+
+ ## 🚀 Equipe de Desenvolvimento
+Alanis Santos - [GitHub]https://github.com/alanis-santos
+Bruna Mendes - [GitHub]https://github.com/bruna-dsmendes
+Eliane Orlandin - [GitHub](https://github.com/Eliane-orlandin)
+Patricia Rocha - [GitHub]https://github.com/patriciarocha1805
+Queren Gomes - ]GitHub]https://github.com/Quequels
