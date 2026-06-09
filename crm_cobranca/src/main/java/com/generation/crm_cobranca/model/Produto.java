@@ -1,6 +1,7 @@
 package com.generation.crm_cobranca.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -29,23 +30,15 @@ public class Produto {
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres.")
     private String nome;
 
-    @NotNull(message = "O número máximo de parcelas é obrigatório!")
-    @Positive(message = "O número de parcelas deve ser maior que zero.")
-    private Integer numeroParcelas;
+    @NotNull(message = "O valor do débito é obrigatório!")
+    @PositiveOrZero(message = "O valor do débito deve ser maior ou igual a zero.")
+    private BigDecimal valorDebito;
 
-    @NotNull(message = "O desconto à vista é obrigatório!")
-    @PositiveOrZero(message = "O desconto à vista deve ser maior ou igual a zero.")
-    private BigDecimal descontoAVista; // Ex: 0.10 para 10% de desconto
-
-    @NotNull(message = "O desconto por tempo é obrigatório!")
-    @PositiveOrZero(message = "O desconto por tempo deve ser maior ou igual a zero.")
-    private BigDecimal descontoPorTempo; // Desconto condicional/pontualidade
+    @NotNull(message = "A data do débito é obrigatória!")
+    private LocalDate dataDebito;
     
     @NotBlank(message = "O status do produto é obrigatório!")
     private String status; // Exemplos: "Pago", "Em acordo", "Em atraso", "Sem negociação"
-
-    @UpdateTimestamp
-    private LocalDateTime data;
 
 	public Long getId() {
 		return id;
@@ -63,36 +56,28 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public Integer getNumeroParcelas() {
-		return numeroParcelas;
+	public BigDecimal getValorDebito() {
+		return valorDebito;
 	}
 
-	public void setNumeroParcelas(Integer numeroParcelas) {
-		this.numeroParcelas = numeroParcelas;
+	public void setValorDebito(BigDecimal valorDebito) {
+		this.valorDebito = valorDebito;
 	}
 
-	public BigDecimal getDescontoAVista() {
-		return descontoAVista;
+	public LocalDate getDataDebito() {
+		return dataDebito;
 	}
 
-	public void setDescontoAVista(BigDecimal descontoAVista) {
-		this.descontoAVista = descontoAVista;
+	public void setDataDebito(LocalDate dataDebito) {
+		this.dataDebito = dataDebito;
 	}
 
-	public BigDecimal getDescontoPorTempo() {
-		return descontoPorTempo;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setDescontoPorTempo(BigDecimal descontoPorTempo) {
-		this.descontoPorTempo = descontoPorTempo;
-	}
-
-	public LocalDateTime getData() {
-		return data;
-	}
-
-	public void setData(LocalDateTime data) {
-		this.data = data;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
     

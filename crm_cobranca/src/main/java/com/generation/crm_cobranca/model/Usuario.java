@@ -40,15 +40,14 @@ public class Usuario {
 	@Email(message = "O atributo e-mail deve ser um email válido!")
 	private String email; 
 	
-	@NotNull(message = "O valor do débito é obrigatório!")
-	@PositiveOrZero(message = "O valor deve ser maior ou igual a zero.")
-	private Double valor; // Alterado para Double (Wrapper) e @NotNull
-	
-	@NotNull(message = "A data do débito é obrigatória!")
-	private LocalDate dataDebito; 
+	@NotBlank(message = "O atributo senha é obrigatório!")
+	@Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres.")
+	private String senha;
 	
 	@NotBlank(message = "O status é obrigatório!")
-	private String status; // Ex: Pendente / Pago / Em acordo
+	private String tipo; // se admin, se user
+	
+	
 	
 	@UpdateTimestamp
 	private LocalDateTime data;
@@ -69,15 +68,20 @@ public class Usuario {
 	public String getEmail() { return email; }
 	public void setEmail(String email) { this.email = email; }
 
-	public Double getValor() { return valor; }
-	public void setValor(Double valor) { this.valor = valor; }
-
-	public LocalDate getDataDebito() { return dataDebito; }
-	public void setDataDebito(LocalDate dataDebito) { this.dataDebito = dataDebito; }
-
-	public String getStatus() { return status; }
-	public void setStatus(String status) { this.status = status; }
-
 	public LocalDateTime getData() { return data; }
 	public void setData(LocalDateTime data) { this.data = data; }
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	
+	
 }
