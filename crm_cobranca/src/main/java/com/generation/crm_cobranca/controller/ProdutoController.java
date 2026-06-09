@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.crm_cobranca.model.Produto;
 import com.generation.crm_cobranca.repository.ProdutoRepository;
+import com.generation.crm_cobranca.repository.CategoriaRepository;
 
 import jakarta.validation.Valid;
 
@@ -30,6 +31,10 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+    
+    //adicinando dependência
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     // Listar todos os produtos
     @GetMapping
@@ -49,6 +54,17 @@ public class ProdutoController {
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Produto>> getByStatus(@PathVariable String status) {
         return ResponseEntity.ok(produtoRepository.findAllByStatusContainingIgnoreCase(status));
+    }
+    
+    //buscando pelo ID da categoria
+    
+    @GetMapping("/categoria/{categoriaId}")
+    public ResponseEntity<List<Produto>> getByCategoria(@PathVariable Long categoriaId) {
+        // Verifica se a categoria existe
+        if (!categoriaRepository.existsById(categoriaId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não encontrada!");
+        }
+        return ResponseEntity.ok(produtoRepository.findAllByCategoriaId(categoriaId));
     }
 
     // Criar novo produto
