@@ -68,19 +68,34 @@ public class ProdutoController {
     }
 
     // Criar novo produto
+    // Validando categoria - Flame
     @PostMapping
     public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(produtoRepository.save(produto));
+        // Verifica se a categoria existe
+        if (produto.getCategoria() != null && 
+            categoriaRepository.existsById(produto.getCategoria().getId())) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(produtoRepository.save(produto));
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+        		"Categoria inválida ou não encontrada!");
     }
 
     // Atualizar produto existente
+    // Validando Categorias - Flame
     @PutMapping
     public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
-        return produtoRepository.findById(produto.getId())
-                .map(resposta -> ResponseEntity.status(HttpStatus.OK)
-                        .body(produtoRepository.save(produto)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        // Verifica se o produto existe
+        if (produtoRepository.existsById(produto.getId())) {
+            // Verifica se a categoria existe
+            if (produto.getCategoria() != null && 
+                categoriaRepository.existsById(produto.getCategoria().getId())) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(produtoRepository.save(produto));
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // Deletar produto
