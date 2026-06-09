@@ -45,10 +45,10 @@ public class ProdutoController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Buscar produtos por Nome (Método de consulta específico)
-    @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Produto>> getByNome(@PathVariable String nome) {
-        return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
+ // Buscar por situação
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Produto>> getByStatus(@PathVariable String status) {
+        return ResponseEntity.ok(produtoRepository.findAllByStatusContainingIgnoreCase(status));
     }
 
     // Criar novo produto
