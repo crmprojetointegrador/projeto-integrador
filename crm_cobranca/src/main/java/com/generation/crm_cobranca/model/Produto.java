@@ -53,6 +53,11 @@ public class Produto {
     @JsonIgnoreProperties("produto")
     private Categoria categoria;
     
+    //Adcionando segurança
+    @ManyToOne
+    @JsonIgnoreProperties("produto")
+    private Usuario usuario;
+    
     public Categoria getCategoria() {
         return categoria;
     }
@@ -112,6 +117,13 @@ public class Produto {
 		this.data = data;
 	}
 
-    
+	//Adicionando gettes and setters usuario
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
     
 }
