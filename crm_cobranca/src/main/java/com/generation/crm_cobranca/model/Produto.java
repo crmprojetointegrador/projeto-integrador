@@ -39,6 +39,9 @@ public class Produto {
     @NotNull(message = "O desconto por tempo é obrigatório!")
     @PositiveOrZero(message = "O desconto por tempo deve ser maior ou igual a zero.")
     private BigDecimal descontoPorTempo; // Desconto condicional/pontualidade
+    
+    @NotBlank(message = "O status do produto é obrigatório!")
+    private String status; // Exemplos: "Pago", "Em acordo", "Em atraso", "Sem negociação"
 
     @UpdateTimestamp
     private LocalDateTime data;
