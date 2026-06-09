@@ -9,6 +9,6 @@ import com.generation.crm_cobranca.model.Produto;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     
-    // Método de consulta específico por termo do nome
-    public List<Produto> findAllByNomeContainingIgnoreCase(@Param("nome") String nome);
+    // Método especial de consulta por Situação/Status
+    public List<Produto> findAllByStatusContainingIgnoreCase(@Param("status") String status);
 }
