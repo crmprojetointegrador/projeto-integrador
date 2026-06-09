@@ -8,6 +8,9 @@ import com.generation.crm_cobranca.model.Produto;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+	
+	//Adicionando método de busca por categoria.
+	List<Produto> findAllByCategoriaId(Long categoriaId);
     
     // Método especial de consulta por Situação/Status
     public List<Produto> findAllByStatusContainingIgnoreCase(@Param("status") String status);

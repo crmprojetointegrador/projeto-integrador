@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.crm_cobranca.model.Produto;
 import com.generation.crm_cobranca.repository.ProdutoRepository;
+import com.generation.crm_cobranca.repository.CategoriaRepository;
 
 import jakarta.validation.Valid;
 
@@ -30,6 +31,10 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+    
+    //adicinando dependência
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     // Listar todos os produtos
     @GetMapping
@@ -50,21 +55,47 @@ public class ProdutoController {
     public ResponseEntity<List<Produto>> getByStatus(@PathVariable String status) {
         return ResponseEntity.ok(produtoRepository.findAllByStatusContainingIgnoreCase(status));
     }
+    
+    //buscando pelo ID da categoria
+    
+    @GetMapping("/categoria/{categoriaId}")
+    public ResponseEntity<List<Produto>> getByCategoria(@PathVariable Long categoriaId) {
+        // Verifica se a categoria existe
+        if (!categoriaRepository.existsById(categoriaId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não encontrada!");
+        }
+        return ResponseEntity.ok(produtoRepository.findAllByCategoriaId(categoriaId));
+    }
 
     // Criar novo produto
+    // Validando categoria - Flame
     @PostMapping
     public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(produtoRepository.save(produto));
+        // Verifica se a categoria existe
+        if (produto.getCategoria() != null && 
+            categoriaRepository.existsById(produto.getCategoria().getId())) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(produtoRepository.save(produto));
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+        		"Categoria inválida ou não encontrada!");
     }
 
     // Atualizar produto existente
+    // Validando Categorias - Flame
     @PutMapping
     public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
-        return produtoRepository.findById(produto.getId())
-                .map(resposta -> ResponseEntity.status(HttpStatus.OK)
-                        .body(produtoRepository.save(produto)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        // Verifica se o produto existe
+        if (produtoRepository.existsById(produto.getId())) {
+            // Verifica se a categoria existe
+            if (produto.getCategoria() != null && 
+                categoriaRepository.existsById(produto.getCategoria().getId())) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(produtoRepository.save(produto));
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // Deletar produto
