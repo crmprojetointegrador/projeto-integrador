@@ -58,11 +58,12 @@ public class UsuarioController {
                         .body(usuarioRepository.save(usuario)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-
-    // 3. Método de consulta específico - Buscar por Status (ex: /usuarios/status/Pendente)
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<Usuario>> getByStatus(@PathVariable String status) {
-        return ResponseEntity.ok(usuarioRepository.findAllByStatusContainingIgnoreCase(status));
+     // GET - Metodo especial de busca por CPF
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Usuario> getByCpf(@PathVariable String cpf) {
+        return usuarioRepository.findByCpf(cpf)
+                .map(resposta -> ResponseEntity.ok(resposta))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     // DELETE - Deletar usuário pelo ID
