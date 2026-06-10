@@ -4,7 +4,7 @@ public class UsuarioLogin {
 	
 	private Long id;
 	private String nome;
-	private String usuario;
+	private String cpf;
 	private String senha;
 	private String token;
 
@@ -24,12 +24,12 @@ public class UsuarioLogin {
 		this.nome = nome;
 	}
 
-	public String getUsuario() {
-		return this.usuario;
+	public String getCpf() {
+		return this.cpf;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getSenha() {
