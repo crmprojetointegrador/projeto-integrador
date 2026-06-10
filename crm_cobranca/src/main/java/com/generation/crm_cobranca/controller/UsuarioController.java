@@ -38,7 +38,7 @@ public class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
     
-	@GetMapping 
+	@GetMapping ("/all")
 	public ResponseEntity<List<Usuario>> getAll() {
 		return ResponseEntity.ok(usuarioRepository.findAll());
 	}
@@ -51,14 +51,15 @@ public class UsuarioController {
 	}
 
     // POST - Cadastrar novo usuário
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<Usuario> post(@Valid @RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(usuarioRepository.save(usuario));
     }
+ 
 
     // PUT - Atualizar usuário existente
-    @PutMapping
+    @PutMapping("/atualizar")
     public ResponseEntity<Usuario> put(@Valid @RequestBody Usuario usuario) {
         return usuarioRepository.findById(usuario.getId())
                 .map(resposta -> ResponseEntity.status(HttpStatus.OK)
