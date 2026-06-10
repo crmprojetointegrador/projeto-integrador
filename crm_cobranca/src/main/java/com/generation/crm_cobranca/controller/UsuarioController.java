@@ -1,5 +1,6 @@
 package com.generation.crm_cobranca.controller;
 
+import com.generation.crm_cobranca.service.UsuarioService;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.crm_cobranca.model.Usuario;
+import com.generation.crm_cobranca.model.UsuarioLogin;
 import com.generation.crm_cobranca.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 
@@ -28,8 +30,13 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Permite requisições de qualquer front-end
 public class UsuarioController {
 
-    @Autowired
+    private final UsuarioService usuarioService;
+	@Autowired
     private UsuarioRepository usuarioRepository;
+
+	UsuarioController(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
+	}
     
 	@GetMapping 
 	public ResponseEntity<List<Usuario>> getAll() {
@@ -77,4 +84,11 @@ public class UsuarioController {
 
         usuarioRepository.deleteById(id);
     }
+    // LOGAR - logando para security
+    @PostMapping("/logar")
+	public ResponseEntity<UsuarioLogin> autenticar(@Valid @RequestBody Optional<UsuarioLogin> usuarioLogin) {
+		return usuarioService.autenticarUsuario(usuarioLogin)
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
 }
