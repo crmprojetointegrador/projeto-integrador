@@ -1,6 +1,6 @@
-# 🏦 Sistema CRM de Cobrança - Projeto Integrador
+# 🏦 Sistema CRM: GESTÃO DE INAPIMPLÊNCIA - Projeto Integrador
 
-Este é o repositório do **Projeto Integrador** desenvolvido durante o bootcamp da **Generation Brasil**. A aplicação consiste numa API REST backend para um sistema de **CRM (Customer Relationship Management) focado em Cobrança**, projetado para gerir clientes, histórico de contactos, faturas e negociações de débitos de forma eficiente.
+Este projeto consiste num sistema de CRM de Cobrança desenvolvido com o objetivo de otimizar o gerenciamento de clientes, contratos e o controlo de pagamentos. A aplicação permite a realização completa de operações de CRUD (Create, Read, Update e Delete) , viabilizando o cadastro, a visualização, a atualização e a remoção de informações de utilizadores, contas a receber e registos financeiros.
 
 ---
 
