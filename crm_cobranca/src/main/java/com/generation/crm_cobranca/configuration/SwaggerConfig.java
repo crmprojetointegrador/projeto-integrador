@@ -19,9 +19,9 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class SwaggerConfig {
 
 	@Bean
-	OpenAPI springBlogPessoalOpenAPI() {
+	OpenAPI springCrmCobrancaOpenAPI() {
 		return new OpenAPI()
-				.info(new Info().title("Projeto Blog Pessoal").description("Projeto Blog Pessoal - Generation Brasil")
+				.info(new Info().title("Projeto CRM Cobrança").description("Projeto CRM Cobrança - Generation Brasil")
 						.version("v0.0.1")
 						.license(new License().name("Generation Brasil").url("https://brazil.generation.org/"))
 						.contact(new Contact().name("Generation Brasil").url("https://github.com/conteudoGeneration")
