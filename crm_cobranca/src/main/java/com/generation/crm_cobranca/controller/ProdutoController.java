@@ -29,84 +29,93 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoRepository produtoRepository;
-    
-    //adicinando dependência
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+	@Autowired
+	private ProdutoRepository produtoRepository;
 
-    // Listar todos os produtos
-    @GetMapping
-    public ResponseEntity<List<Produto>> getAll() {
-        return ResponseEntity.ok(produtoRepository.findAll());
-    }
+	// adicinando dependência
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
-    // Buscar produto por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Produto> getById(@PathVariable Long id) {
-        return produtoRepository.findById(id)
-                .map(resposta -> ResponseEntity.ok(resposta))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
+	// Listar todos os produtos
+	@GetMapping
+	public ResponseEntity<List<Produto>> getAll() {
+		return ResponseEntity.ok(produtoRepository.findAll());
+	}
 
- // Buscar por situação
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<Produto>> getByStatus(@PathVariable String status) {
-        return ResponseEntity.ok(produtoRepository.findAllByStatusContainingIgnoreCase(status));
-    }
-    
-    //buscando pelo ID da categoria
-    
-    @GetMapping("/categoria/{categoriaId}")
-    public ResponseEntity<List<Produto>> getByCategoria(@PathVariable Long categoriaId) {
-        // Verifica se a categoria existe
-        if (!categoriaRepository.existsById(categoriaId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não encontrada!");
-        }
-        return ResponseEntity.ok(produtoRepository.findAllByCategoriaId(categoriaId));
-    }
+	// Buscar produto por ID
+	@GetMapping("/{id}")
+	public ResponseEntity<Produto> getById(@PathVariable Long id) {
+		return produtoRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+	}
 
-    // Criar novo produto
-    // Validando categoria - Flame
-    @PostMapping
-    public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
-        // Verifica se a categoria existe
-        if (produto.getCategoria() != null && 
-            categoriaRepository.existsById(produto.getCategoria().getId())) {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(produtoRepository.save(produto));
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-        		"Categoria inválida ou não encontrada!");
-    }
+	// Buscar por situação
+	@GetMapping("/status/{status}")
+	public ResponseEntity<List<Produto>> getByStatus(@PathVariable String status) {
+		return ResponseEntity.ok(produtoRepository.findAllByStatusContainingIgnoreCase(status));
+	}
 
-    // Atualizar produto existente
-    // Validando Categorias - Flame
-    @PutMapping
-    public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
-        // Verifica se o produto existe
-        if (produtoRepository.existsById(produto.getId())) {
-            // Verifica se a categoria existe
-            if (produto.getCategoria() != null && 
-                categoriaRepository.existsById(produto.getCategoria().getId())) {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(produtoRepository.save(produto));
-            }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+	// buscando pelo ID da categoria
 
-    // Deletar produto
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        Optional<Produto> produto = produtoRepository.findById(id);
+	@GetMapping("/categoria/{categoriaId}")
+	public ResponseEntity<List<Produto>> getByCategoria(@PathVariable Long categoriaId) {
+		// Verifica se a categoria existe
+		if (!categoriaRepository.existsById(categoriaId)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não encontrada!");
+		}
+		return ResponseEntity.ok(produtoRepository.findAllByCategoriaId(categoriaId));
+	}
 
-        if(produto.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!");
+	// Criar novo produto
+	// Validando categoria - Flame
+	@PostMapping
+	public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
+		// Verifica se a categoria existe
+		if (produto.getCategoria() != null && categoriaRepository.existsById(produto.getCategoria().getId())) {
+			return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+		}
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
+	}
 
-        produtoRepository.deleteById(id);
-    }
+	// Atualizar produto existente
+	// Validando Categorias - Flame
+	@PutMapping
+	public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
+		// Verifica se o produto existe
+		if (produtoRepository.existsById(produto.getId())) {
+			// Verifica se a categoria existe
+			if (produto.getCategoria() != null && categoriaRepository.existsById(produto.getCategoria().getId())) {
+				return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+			}
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	}
+
+	// Deletar produto
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable Long id) {
+		Optional<Produto> produto = produtoRepository.findById(id);
+
+		if (produto.isEmpty())
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!");
+
+		produtoRepository.deleteById(id);
+	}
+	
+	@PutMapping("/atualizar-status/{id}")
+	public ResponseEntity<Void> putStatusDireto(@PathVariable Long id, @RequestBody String novoStatus) {
+	    String statusLimpo = novoStatus.replace("\"", "").trim();
+	    
+	    // O método retorna a quantidade de linhas alteradas (0 se não achou o ID, 1 se atualizou)
+	    int linhasAfetadas = produtoRepository.updateStatusById(id, statusLimpo);
+	    
+	    if (linhasAfetadas == 0) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	    }
+	    
+	    return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
 }
