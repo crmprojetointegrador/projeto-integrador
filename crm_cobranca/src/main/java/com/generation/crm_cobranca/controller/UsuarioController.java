@@ -51,21 +51,23 @@ public class UsuarioController {
 	}
 
     // POST - Cadastrar novo usuário
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Usuario> post(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(usuarioRepository.save(usuario));
-    }
+	@PostMapping("/cadastrar")
+	public ResponseEntity<Usuario> post(@Valid @RequestBody Usuario usuario) {
+	    return usuarioService.cadastrarUsuario(usuario)
+	            .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+	            .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+	}
  
 
     // PUT - Atualizar usuário existente
-    @PutMapping("/atualizar")
+	@PutMapping("/atualizar")
     public ResponseEntity<Usuario> put(@Valid @RequestBody Usuario usuario) {
-        return usuarioRepository.findById(usuario.getId())
-                .map(resposta -> ResponseEntity.status(HttpStatus.OK)
-                        .body(usuarioRepository.save(usuario)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+       return usuarioService.atualizarUsuario(usuario)
+               .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+               .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+    
+    
      // GET - Metodo especial de busca por CPF
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<Usuario> getByCpf(@PathVariable String cpf) {
