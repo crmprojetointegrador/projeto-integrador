@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
+	@Schema(example = "12345678901")
 	@NotBlank(message = "O atributo CPF é obrigatório!")
 	@Size(min = 11, max = 11, message = "O atributo CPF deve ter 11 caracteres.")
 	private String cpf; // Alterado para String para aceitar zeros à esquerda e validação de tamanho
