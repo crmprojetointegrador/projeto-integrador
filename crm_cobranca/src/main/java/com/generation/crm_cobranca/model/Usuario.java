@@ -53,12 +53,13 @@ public class Usuario {
 	@NotBlank(message = "O status é obrigatório!")
 	private String tipo; // se admin, se user
 	
+	@UpdateTimestamp
+	private LocalDateTime data;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Produto> produtos;
 	
-	@UpdateTimestamp
-	private LocalDateTime data;
 
 	// Getters e Setters
 	public Long getId() { return id; }
@@ -89,6 +90,12 @@ public class Usuario {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 	
 	
