@@ -2,13 +2,19 @@ package com.generation.crm_cobranca.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -47,10 +53,13 @@ public class Usuario {
 	@NotBlank(message = "O status é obrigatório!")
 	private String tipo; // se admin, se user
 	
-	
-	
 	@UpdateTimestamp
 	private LocalDateTime data;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("usuario")
+	private List<Produto> produtos;
+	
 
 	// Getters e Setters
 	public Long getId() { return id; }
@@ -81,6 +90,12 @@ public class Usuario {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 	
 	
