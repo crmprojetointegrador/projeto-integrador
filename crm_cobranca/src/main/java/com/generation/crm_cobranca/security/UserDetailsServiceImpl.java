@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("Usuário (e-mail) não pode ser vazio");
 		}
 		
-		Optional<Usuario> usuario = usuarioRepository.findByUsuario(username);
+		Optional<Usuario> usuario = usuarioRepository.findByCpf(username);
 
 		if (usuario.isPresent()) {
 			return new UserDetailsImpl(usuario.get());

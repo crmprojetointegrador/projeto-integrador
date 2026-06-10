@@ -41,7 +41,7 @@ public class UsuarioService {
 
 	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
+		if (usuarioRepository.findByCpf(usuario.getCpf()).isPresent()) {
 			return Optional.empty();
 		}
 
@@ -57,7 +57,7 @@ public class UsuarioService {
 			return Optional.empty();
 		}
 
-		Optional<Usuario> usuarioExistente = usuarioRepository.findByUsuario(usuario.getUsuario());
+		Optional<Usuario> usuarioExistente = usuarioRepository.findByCpf(usuario.getCpf());
 		
 		if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
@@ -78,9 +78,9 @@ public class UsuarioService {
 		try {
  
 			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(login.getUsuario(), login.getSenha()));
+					new UsernamePasswordAuthenticationToken(login.getCpf(), login.getSenha()));
 
-			return usuarioRepository.findByUsuario(login.getUsuario())
+			return usuarioRepository.findByCpf(login.getCpf())
 				.map(usuario -> construirRespostaLogin(login, usuario));
 
 		} catch (Exception e) {
@@ -93,9 +93,8 @@ public class UsuarioService {
 		
 		usuarioLogin.setId(usuario.getId());
 		usuarioLogin.setNome(usuario.getNome());
-		usuarioLogin.setFoto(usuario.getFoto());
 		usuarioLogin.setSenha("");
-		usuarioLogin.setToken(gerarToken(usuario.getUsuario()));
+		usuarioLogin.setToken(gerarToken(usuario.getCpf()));
 		return usuarioLogin;
 		
 	}
