@@ -41,27 +41,37 @@ O código dentro da diretoria `crm_cobranca` está organizado seguindo o padrão
 ## 🛑 Pré-requisitos para Execução
 
 Antes de rodar a aplicação localmente, certifique-se de que possui:
+
 1. **Java JDK 17** ou superior configurado no sistema.
-2. Uma ferramenta de base de dados como o **MySQL Workbench** ou o **XAMPP** ativo.
+2. Uma ferramenta de base de dados como o **MySQL Workbench** ativa.
 3. Uma IDE instalada (Spring Tool Suite - STS, Eclipse, VS Code ou IntelliJ).
 
 ---
 
 ## 🚀 Como Rodar a Aplicação Localmente
-
-1. **Clonar este Repositório:**
+   1. **Clonar este Repositório:**
    ```bash
-   git clone [https://github.com/crmprojetointegrador/projeto-integrador.git](https://github.com/crmprojetointegrador/projeto-integrador.git)
+   git clone https://github.com/crmprojetointegrador/projeto-integrador-fitness.git
+   ```
 
- ---
+2. **Configurar o Banco de Dados:**
+   - No MySQL Workbench, crie uma base de dados com o nome que preferir (ex: `db_fitness_app`).
+   - Configure as credenciais de acesso no arquivo `application.properties` localizado em `src/main/resources/`.
 
- ## 🚀 Equipe de Desenvolvimento
-Alanis Santos - https://github.com/alanis-santos
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/db_fitness_app?useSSL=false&serverTimezone=UTC
+   spring.datasource.username=root
+   spring.datasource.password=sua_senha
+   ```
 
-Bruna Mendes - https://github.com/bruna-dsmendes
+3. **Executar a Aplicação:**
+   - Importe o projeto na sua IDE como um **Projeto Maven Existente**.
+   - Localize a classe principal `FitnessApplication.java` (ou similar) e execute-a como **Spring Boot App**.
 
-Eliane Orlandin - https://github.com/Eliane-orlandin
+## 🤝 Equipe de Desenvolvimento
 
-Patricia Rocha - https://github.com/patriciarocha1805
-
-Queren Gomes - https://github.com/Quequels
+- **Alanis Santos** - [GitHub](https://github.com/alanis-santos)   [Linkedin](https://www.linkedin.com/in/devalanissantos/)
+- **Bruna Mendes** - [GitHub](https://github.com/bruna-dsmendes)   [Linkedin](https://www.linkedin.com/in/devbrunamendes/)
+- **Eliane Orlandin** - [GitHub](https://github.com/Eliane-orlandin)   [Linkedin](https://www.linkedin.com/in/elianeorlandindocarmo/)
+- **Flame Souza** - [GitHub](https://github.com/PraFlame)   [Linkedin](https://www.linkedin.com/in/souflame/)
+- **Patricia Rocha** - [GitHub](https://github.com/patriciarocha1805)   [Linkedin](https://www.linkedin.com/in/patriciarochadev/)
