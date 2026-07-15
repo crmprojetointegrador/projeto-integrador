@@ -10,6 +10,9 @@ import com.generation.crm_cobranca.model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
-    // Método de consulta específico de busca por CPF
+    // Login agora é feito por e-mail
+    public Optional<Usuario> findByEmail(String email);
+
+    // Método especial de busca por CPF (não usado para login)
     public Optional<Usuario> findByCpf(String cpf);
 }

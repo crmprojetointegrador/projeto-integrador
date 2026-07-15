@@ -54,6 +54,11 @@ public class Produto {
     @ManyToOne
     @JsonIgnoreProperties("produto")
     private Usuario usuario;
+
+    // A quem pertence a dívida (diferente do Usuario, que é quem opera o CRM)
+    @ManyToOne
+    @JsonIgnoreProperties("produtos")
+    private Cliente cliente;
     
     public Categoria getCategoria() {
         return categoria;
@@ -61,6 +66,14 @@ public class Produto {
     
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 	public Long getId() {

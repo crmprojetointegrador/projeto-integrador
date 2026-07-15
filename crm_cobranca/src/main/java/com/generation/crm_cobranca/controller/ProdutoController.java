@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.generation.crm_cobranca.model.Produto;
 import com.generation.crm_cobranca.repository.ProdutoRepository;
 import com.generation.crm_cobranca.repository.CategoriaRepository;
+import com.generation.crm_cobranca.repository.ClienteRepository;
 
 import jakarta.validation.Valid;
 
@@ -35,6 +36,9 @@ public class ProdutoController {
 	// adicinando dependência
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
 
 	// Listar todos os produtos
 	@GetMapping
@@ -66,28 +70,47 @@ public class ProdutoController {
 		return ResponseEntity.ok(produtoRepository.findAllByCategoriaId(categoriaId));
 	}
 
+	// buscando pelo ID do cliente
+
+	@GetMapping("/cliente/{clienteId}")
+	public ResponseEntity<List<Produto>> getByCliente(@PathVariable Long clienteId) {
+		// Verifica se o cliente existe
+		if (!clienteRepository.existsById(clienteId)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente não encontrado!");
+		}
+		return ResponseEntity.ok(produtoRepository.findAllByClienteId(clienteId));
+	}
+
 	// Criar novo produto
-	// Validando categoria - Flame
+	// Validando categoria e cliente
 	@PostMapping
 	public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
 		// Verifica se a categoria existe
-		if (produto.getCategoria() != null && categoriaRepository.existsById(produto.getCategoria().getId())) {
-			return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+		if (produto.getCategoria() == null || !categoriaRepository.existsById(produto.getCategoria().getId())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
 		}
-		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
+		// Verifica se o cliente existe
+		if (produto.getCliente() == null || !clienteRepository.existsById(produto.getCliente().getId())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inválido ou não encontrado!");
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
 	}
 
 	// Atualizar produto existente
-	// Validando Categorias - Flame
+	// Validando categoria e cliente
 	@PutMapping
 	public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
 		// Verifica se o produto existe
 		if (produtoRepository.existsById(produto.getId())) {
 			// Verifica se a categoria existe
-			if (produto.getCategoria() != null && categoriaRepository.existsById(produto.getCategoria().getId())) {
-				return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+			if (produto.getCategoria() == null || !categoriaRepository.existsById(produto.getCategoria().getId())) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
 			}
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida ou não encontrada!");
+			// Verifica se o cliente existe
+			if (produto.getCliente() == null || !clienteRepository.existsById(produto.getCliente().getId())) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inválido ou não encontrado!");
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}

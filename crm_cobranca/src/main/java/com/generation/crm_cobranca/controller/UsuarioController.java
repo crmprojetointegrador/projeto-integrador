@@ -68,7 +68,7 @@ public class UsuarioController {
     }
     
     
-     // GET - Metodo especial de busca por CPF
+     // GET - Metodo especial de busca por CPF (não usado para login, apenas localização do cliente/usuário)
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<Usuario> getByCpf(@PathVariable String cpf) {
         return usuarioRepository.findByCpf(cpf)
