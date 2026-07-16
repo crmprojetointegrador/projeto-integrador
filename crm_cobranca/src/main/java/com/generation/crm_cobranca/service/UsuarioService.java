@@ -45,6 +45,10 @@ public class UsuarioService {
 			return Optional.empty();
 		}
 
+		if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
+			return Optional.empty();
+		}
+
 		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 		usuario.setId(null);
 		
@@ -57,10 +61,16 @@ public class UsuarioService {
 			return Optional.empty();
 		}
 
-		Optional<Usuario> usuarioExistente = usuarioRepository.findByCpf(usuario.getCpf());
+		Optional<Usuario> usuarioComMesmoCpf = usuarioRepository.findByCpf(usuario.getCpf());
 		
-		if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
+		if (usuarioComMesmoCpf.isPresent() && !usuarioComMesmoCpf.get().getId().equals(usuario.getId())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+		}
+
+		Optional<Usuario> usuarioComMesmoEmail = usuarioRepository.findByEmail(usuario.getEmail());
+
+		if (usuarioComMesmoEmail.isPresent() && !usuarioComMesmoEmail.get().getId().equals(usuario.getId())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe outro usuário com esse e-mail!", null);
 		}
 
 		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
@@ -78,9 +88,9 @@ public class UsuarioService {
 		try {
  
 			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(login.getCpf(), login.getSenha()));
+					new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
 
-			return usuarioRepository.findByCpf(login.getCpf())
+			return usuarioRepository.findByEmail(login.getEmail())
 				.map(usuario -> construirRespostaLogin(login, usuario));
 
 		} catch (Exception e) {
@@ -94,7 +104,7 @@ public class UsuarioService {
 		usuarioLogin.setId(usuario.getId());
 		usuarioLogin.setNome(usuario.getNome());
 		usuarioLogin.setSenha("");
-		usuarioLogin.setToken(gerarToken(usuario.getCpf()));
+		usuarioLogin.setToken(gerarToken(usuario.getEmail()));
 		return usuarioLogin;
 		
 	}
