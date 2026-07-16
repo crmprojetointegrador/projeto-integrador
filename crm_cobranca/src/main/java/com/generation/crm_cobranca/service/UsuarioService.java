@@ -3,6 +3,8 @@ package com.generation.crm_cobranca.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,8 @@ import com.generation.crm_cobranca.security.JwtService;
 
 @Service
 public class UsuarioService {
+
+	private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -94,6 +98,9 @@ public class UsuarioService {
 				.map(usuario -> construirRespostaLogin(login, usuario));
 
 		} catch (Exception e) {
+
+			logger.error("Falha na autenticação para o e-mail '{}': {} - {}",
+					login.getEmail(), e.getClass().getName(), e.getMessage());
 
 			return Optional.empty();
 		}
