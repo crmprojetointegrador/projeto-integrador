@@ -15,6 +15,9 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 	
 	//Adicionando método de busca por categoria.
 	List<Produto> findAllByCategoriaId(Long categoriaId);
+
+	//Adicionando método de busca por cliente.
+	List<Produto> findAllByClienteId(Long clienteId);
     
     // Método especial de consulta por Situação/Status
     public List<Produto> findAllByStatusContainingIgnoreCase(@Param("status") String status);
